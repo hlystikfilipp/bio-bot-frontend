@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Био — ЦТ/ЦЭ по биологии</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+
+<!-- ===================== ГЛАВНАЯ ===================== -->
+<div id="screen-home" class="screen active">
+
+  <header class="hero">
+    <div class="hero-top">
+      <span class="hero-eyebrow">Био | ЦТ/ЦЭ по биологии</span>
+      <button class="icon-btn" aria-label="Ещё">⋯</button>
+    </div>
+
+    <div class="hero-body">
+      <div class="hero-text">
+        <p class="greeting" id="greeting">Привет! 👋</p>
+        <p class="subtext">Готовимся к ЦТ/ЦЭ вместе.<br>Пошагово, понятно, с заботой о тебе.</p>
+      </div>
+      <div class="hero-mascot" aria-hidden="true">
+        <!-- TODO: заменить на готовую иллюстрацию Био (mascot-home.png), когда пришлёшь файл -->
+        <div class="mascot-placeholder">🧬</div>
+      </div>
+    </div>
+
+    <div class="progress-card">
+      <div class="progress-icon">🎯</div>
+      <div class="progress-main">
+        <div class="progress-row">
+          <span class="progress-label">Твой прогресс</span>
+          <span class="progress-value" id="progress-numbers">— / —</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-row">
+          <span class="progress-label">Стрик</span>
+          <span class="streak">🔥 <span id="streak-value">—</span></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="menu-grid">
+      <button class="menu-card" onclick="showPlaceholder('Учить')">
+        <span class="menu-icon">📖</span>
+        <span class="menu-title">Учить</span>
+        <span class="menu-sub">Теория и конспекты</span>
+      </button>
+      <button class="menu-card" onclick="openTopicsList()">
+        <span class="menu-icon">📋</span>
+        <span class="menu-title">Тесты</span>
+        <span class="menu-sub">Практика и задания</span>
+      </button>
+      <button class="menu-card" onclick="showPlaceholder('Статистика')">
+        <span class="menu-icon">📊</span>
+        <span class="menu-title">Статистика</span>
+        <span class="menu-sub">Твой прогресс</span>
+      </button>
+      <button class="menu-card" onclick="showPlaceholder('Домашнее задание')">
+        <span class="menu-icon">🎓</span>
+        <span class="menu-title">Домашнее задание</span>
+        <span class="menu-sub">Проверь свои знания</span>
+      </button>
+      <button class="menu-card" onclick="showPlaceholder('Мои достижения')">
+        <span class="menu-icon">⭐</span>
+        <span class="menu-title">Мои достижения</span>
+        <span class="menu-sub">Награды и уровень</span>
+      </button>
+      <button class="menu-card" onclick="showPlaceholder('Настройки')">
+        <span class="menu-icon">⚙️</span>
+        <span class="menu-title">Настройки</span>
+        <span class="menu-sub">Внешний вид, профиль</span>
+      </button>
+    </section>
+
+    <section class="today-card">
+      <div class="today-content">
+        <div class="today-label">📋 Сегодняшнее задание</div>
+        <h2 id="today-topic-name">Тема: —</h2>
+        <p>Выполни задания и узнай, насколько хорошо ты знаешь эту тему.</p>
+        <button class="btn-start" id="today-start-btn">Начать →</button>
+      </div>
+      <div class="today-visual" aria-hidden="true">🧫</div>
+    </section>
+
+    <section class="quick-access">
+      <div class="section-header">
+        <h3>Быстрый доступ</h3>
+        <a href="#" onclick="openTopicsList(); return false;">Все темы →</a>
+      </div>
+      <div class="chip-row" id="quick-topics-row">
+        <div class="chip skeleton"></div>
+        <div class="chip skeleton"></div>
+        <div class="chip skeleton"></div>
+      </div>
+    </section>
+
+    <section class="quote-card">
+      <div class="quote-icon">🌿</div>
+      <p>«Ты не просто учишь биологию —<br>ты узнаёшь, как устроен этот удивительный мир.»</p>
+      <div class="quote-sign">Био ♡</div>
+    </section>
+  </main>
+</div>
+
+<!-- ===================== СПИСОК ТЕМ ===================== -->
+<div id="screen-topics" class="screen">
+  <header class="subheader">
+    <button class="icon-btn" onclick="showScreen('screen-home')" aria-label="Назад">‹</button>
+    <h2>Все темы</h2>
+  </header>
+  <main class="topics-list" id="topics-list-container"></main>
+</div>
+
+<!-- ===================== ВИКТОРИНА ===================== -->
+<div id="screen-quiz" class="screen">
+  <header class="subheader">
+    <button class="icon-btn" onclick="showScreen('screen-topics')" aria-label="Назад">‹</button>
+    <div class="quiz-progress-track">
+      <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+    </div>
+  </header>
+  <main class="quiz-body">
+    <div id="question-card" class="question-card"></div>
+    <div id="explanation-box" class="explanation-box" style="display:none;"></div>
+  </main>
+</div>
+
+<!-- ===================== ЗАГЛУШКА ДЛЯ РАЗДЕЛОВ В РАЗРАБОТКЕ ===================== -->
+<div id="screen-placeholder" class="screen">
+  <header class="subheader">
+    <button class="icon-btn" onclick="showScreen('screen-home')" aria-label="Назад">‹</button>
+    <h2 id="placeholder-title">Раздел</h2>
+  </header>
+  <main class="placeholder-body">
+    <div class="placeholder-icon">🚧</div>
+    <p>Этот раздел ещё в разработке.<br>Скоро здесь появится нужная функция.</p>
+  </main>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-item" data-nav="home" onclick="showScreen('screen-home')">
+    <span class="nav-icon">🏠</span><span>Главная</span>
+  </button>
+  <button class="nav-item" data-nav="learn" onclick="showPlaceholder('Учить')">
+    <span class="nav-icon">📖</span><span>Учить</span>
+  </button>
+  <button class="nav-item" data-nav="tests" onclick="openTopicsList()">
+    <span class="nav-icon">📋</span><span>Тесты</span>
+  </button>
+  <button class="nav-item" data-nav="achievements" onclick="showPlaceholder('Достижения')">
+    <span class="nav-icon">🏆</span><span>Достижения</span>
+  </button>
+  <button class="nav-item" data-nav="profile" onclick="showPlaceholder('Профиль')">
+    <span class="nav-icon">👤</span><span>Профиль</span>
+  </button>
+</nav>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
